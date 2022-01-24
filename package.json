@@ -1,9 +1,7 @@
 {
   "name": "@a-part/nestjs-graphql-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "nestjs graphql helper",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && tsc"
