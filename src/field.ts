@@ -21,6 +21,8 @@ import { OmittedFieldOptions, IValidationOptions } from "./types";
     ) => GraphQLField(returnTypeFunction, {
         ...defaultOptions,
         ...options,
+        ...(defaultValidateOptions?.required !== undefined && {nullable: !defaultValidateOptions.required}),
+        ...(validateOptions?.required !== undefined && {nullable: !validateOptions.required}),
         description: serializeValidationOption({
             ...defaultValidateOptions,
             ...validateOptions
