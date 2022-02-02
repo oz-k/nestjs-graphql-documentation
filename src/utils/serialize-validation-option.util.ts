@@ -1,5 +1,5 @@
 import { isNotEmpty, isString } from "class-validator";
-import { IValidationOptions } from "./types";
+import { IValidationOptions } from "../types";
 
 /**
  * 유효성검사 옵션을 graphql의 주석으로 사용가능하게 직렬화하는 함수

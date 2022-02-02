@@ -1,5 +1,5 @@
 import { IOffsetPaginationOption } from "@a-part/mongoose-pagination-plugin";
-import { Field } from "./field";
+import { Field } from "../fields";
 import { Type } from "@nestjs/common";
 import { InputType } from "@nestjs/graphql";
 import { Type as TransformType } from 'class-transformer';

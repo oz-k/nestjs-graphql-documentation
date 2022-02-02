@@ -2,7 +2,7 @@ import { IOffsetPaginatedInfo, IOffsetPaginatedResult } from '@a-part/mongoose-p
 import { Type } from "@nestjs/common";
 import { ObjectType } from "@nestjs/graphql";
 import { GraphQLInt } from "graphql";
-import { Field } from './field';
+import { Field } from '../fields';
 
 @ObjectType()
 class OffsetPaginatedInfo implements IOffsetPaginatedInfo {
