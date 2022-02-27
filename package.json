@@ -1,6 +1,6 @@
 {
   "name": "@a-part/nestjs-graphql-helper",
-  "version": "1.4.3",
+  "version": "1.5.4",
   "description": "nestjs graphql helper",
   "scripts": {
     "test": "jest",

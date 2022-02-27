@@ -1,22 +1,21 @@
 import { GraphQLISODateTime } from "@nestjs/graphql";
-import { Types } from "mongoose";
-import { Field } from "./field";
 import { GraphQLObjectID } from 'graphql-scalars';
+import { Field } from "./field";
 
 export const ObjectIdField = Field(() => GraphQLObjectID, {
     name: '고유 아이디',
-    example: new Types.ObjectId(),
+    example: '61dd715ee05d21292eee0518',
     required: true
 });
 
 export const CreatedAtField = Field(() => GraphQLISODateTime, {
     name: '생성일',
-    example: new Date(),
+    example: '2022-02-18T10:53:49.495Z',
     required: true
 });
 
 export const UpdatedAtField = Field(() => GraphQLISODateTime, {
     name: '최종 수정일',
-    example: new Date(),
+    example: '2022-02-18T10:53:49.495Z',
     required: true
 });
