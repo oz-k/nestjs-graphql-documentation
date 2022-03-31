@@ -3,7 +3,6 @@ import { APP_INTERCEPTOR, ModuleRef } from "@nestjs/core";
 import { GqlContextType, GqlExecutionContext } from "@nestjs/graphql";
 import { GraphQLRequestContext } from "apollo-server-core";
 import * as DataLoader from "dataloader";
-import { Query } from "mongoose";
 import { Observable } from "rxjs";
 
 const NEST_LOADER_CONTEXT_KEY = 'NEST_LOADER_CONTEXT_KEY';
@@ -89,7 +88,7 @@ export const ensureOrder = (options) => {
 
 export interface INestDataLoaderFactoryOptions<ID, Type> {
     propertyKey?: string;
-    query: (ids: readonly ID[]) => Query<Type[], Type>;
+    query: (ids: readonly ID[]) => Promise<Type>;
     typeName?: string;
     dataloaderConfig?: DataLoader.Options<ID, Type>;
 }

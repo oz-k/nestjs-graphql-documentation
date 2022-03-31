@@ -1,4 +1,7 @@
-export interface IValidationOptions {
+import { Type } from '@nestjs/common';
+import { ApolloError } from 'apollo-server-core';
+
+export interface FieldDocumentationOptions {
     name: string; //필드명
     example?: any; //데이터 예시
     required: boolean; //필수여부
@@ -15,4 +18,13 @@ export interface IValidationOptions {
     maxItems?: number; //배열의 최대길이
     uniqueItems?: boolean; //배열 고유여부
 }
-export interface IOptionalValidationOptions extends Partial<IValidationOptions> {}
+
+export interface ErrorDocumentationOptions {
+    error: Type<ApolloError>;
+    description: string;
+};
+
+export interface ResolverDocumentationOptions {
+    name: string; // 리졸버 기능
+    description?: string; // 추가 설명
+}

@@ -2,11 +2,11 @@ import { IOffsetPaginatedInfo, IOffsetPaginatedResult } from '@a-part/mongoose-p
 import { Type } from "@nestjs/common";
 import { ObjectType } from "@nestjs/graphql";
 import { GraphQLInt } from "graphql";
-import { Field } from '../fields';
+import { FieldDefault } from '../decorators';
 
 @ObjectType()
 class OffsetPaginatedInfo implements IOffsetPaginatedInfo {
-    @Field(() => GraphQLInt, {
+    @FieldDefault(() => GraphQLInt, {
         name: '총 아이템 개수',
         required: true
     })()
@@ -22,13 +22,13 @@ class OffsetPaginatedInfo implements IOffsetPaginatedInfo {
 export function OffsetPaginatedResult<T>(classRef: Type<T>): Type<IOffsetPaginatedResult<T>> {
     @ObjectType()
     class OffsetPaginatedDto implements IOffsetPaginatedResult<T> {
-        @Field(() => OffsetPaginatedInfo, {
+        @FieldDefault(() => OffsetPaginatedInfo, {
             name: '페이징정보',
             required: true
         })()
         offsetPaginatedInfo: OffsetPaginatedInfo;
         
-        @Field(() => [classRef], {
+        @FieldDefault(() => [classRef], {
             name: '아이템들',
             required: true
         })()

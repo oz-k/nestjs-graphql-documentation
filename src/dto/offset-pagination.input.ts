@@ -1,5 +1,5 @@
 import { IOffsetPaginationOption } from "@a-part/mongoose-pagination-plugin";
-import { Field } from "../fields";
+import { FieldDefault } from "../decorators";
 import { Type } from "@nestjs/common";
 import { InputType } from "@nestjs/graphql";
 import { Type as TransformType } from 'class-transformer';
@@ -23,7 +23,7 @@ export interface IOffsetPagination<T> {
 //페이징옵션 클래스
 @InputType()
 class OffsetPaginationOptionInput implements IOffsetPaginationOption {
-    @Field(() => GraphQLInt, {
+    @FieldDefault(() => GraphQLInt, {
         name: '현재 페이지',
         example: 1,
         required: true,
@@ -32,7 +32,7 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
     @Min(PAGE_SIZE.MIN)
     page: number;
 
-    @Field(() => GraphQLInt, {
+    @FieldDefault(() => GraphQLInt, {
         name: '가져올 아이템 개수',
         example: 10,
         required: true,
@@ -54,7 +54,7 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
     //필터가 있는 페이징인풋
     @InputType()
     class OffsetPaginationFilterInput<T> implements IOffsetPagination<T> {
-        @Field(() => OffsetPaginationOptionInput, {
+        @FieldDefault(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
         })()
@@ -62,7 +62,7 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
         @ValidateNested()
         offsetPaginationOption: OffsetPaginationOptionInput;
 
-        @Field(() => classRef, {
+        @FieldDefault(() => classRef, {
             name: '검색필터',
             required: true
         })()
@@ -74,7 +74,7 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
     //필터가 없는 페이징인풋
     @InputType()
     class OffsetPaginationInput {
-        @Field(() => OffsetPaginationOptionInput, {
+        @FieldDefault(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
         })()
