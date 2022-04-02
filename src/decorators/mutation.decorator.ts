@@ -20,7 +20,7 @@ export function Mutation(
     }
     
     return GraphQLMutation(typeFunc, {
-        ...options,
+        ...errorDocumentationOptionsArrayOrOptions,
         description: stringifyResolverDocumentationOption(documentationOptions),
     });
 }

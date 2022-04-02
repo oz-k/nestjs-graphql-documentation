@@ -20,7 +20,7 @@ export function Query(
     }
 
     return GraphQLQuery(typeFunc, {
-        ...options,
+        ...errorDocumentationOptionsArrayOrOptions,
         description: stringifyResolverDocumentationOption(documentationOptions),
     });
 }

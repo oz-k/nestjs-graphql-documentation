@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
 
-export interface ITimestamps {
+export interface Timestamps {
     createdAt: Date;
     updatedAt: Date;
 }
 
-export interface IObjectId {
+export interface DocumentId {
     _id: Types.ObjectId;
 }

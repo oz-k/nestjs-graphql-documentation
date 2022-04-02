@@ -1,5 +1,5 @@
 import { IOffsetPaginationOption } from "@a-part/mongoose-pagination-plugin";
-import { FieldDefault } from "../decorators";
+import { Field } from "../decorators";
 import { Type } from "@nestjs/common";
 import { InputType } from "@nestjs/graphql";
 import { Type as TransformType } from 'class-transformer';
@@ -15,7 +15,7 @@ const LIMIT_SIZE = {
 }
 
 //페이징 요청 인터페이스
-export interface IOffsetPagination<T> {
+export interface GetOffsetPaginatedInput<T> {
     offsetPaginationOption: IOffsetPaginationOption;
     filter?: T;
 }
@@ -23,22 +23,22 @@ export interface IOffsetPagination<T> {
 //페이징옵션 클래스
 @InputType()
 class OffsetPaginationOptionInput implements IOffsetPaginationOption {
-    @FieldDefault(() => GraphQLInt, {
+    @Field(() => GraphQLInt, {
         name: '현재 페이지',
         example: 1,
         required: true,
         minimum: PAGE_SIZE.MIN
-    })()
+    })
     @Min(PAGE_SIZE.MIN)
     page: number;
 
-    @FieldDefault(() => GraphQLInt, {
+    @Field(() => GraphQLInt, {
         name: '가져올 아이템 개수',
         example: 10,
         required: true,
         minimum: LIMIT_SIZE.MIN,
         maximum: LIMIT_SIZE.MAX    
-    })()
+    })
     @Min(LIMIT_SIZE.MIN)
     @Max(LIMIT_SIZE.MAX)
     limit: number;
@@ -50,22 +50,22 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
  * @returns 페이징 request
  * @author oz-k
  */
- export function OffsetPagination<T>(classRef?: Type<T>): Type<IOffsetPagination<T>> {
+export function GetOffsetPaginatedInput<T>(classRef?: Type<T>): Type<GetOffsetPaginatedInput<T>> {
     //필터가 있는 페이징인풋
     @InputType()
-    class OffsetPaginationFilterInput<T> implements IOffsetPagination<T> {
-        @FieldDefault(() => OffsetPaginationOptionInput, {
+    class OffsetPaginationFilterInput<T> implements GetOffsetPaginatedInput<T> {
+        @Field(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
-        })()
+        })
         @TransformType(() => OffsetPaginationOptionInput)
         @ValidateNested()
         offsetPaginationOption: OffsetPaginationOptionInput;
 
-        @FieldDefault(() => classRef, {
+        @Field(() => classRef, {
             name: '검색필터',
             required: true
-        })()
+        })
         @TransformType(() => classRef)
         @ValidateNested()
         filter: T;
@@ -74,10 +74,10 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
     //필터가 없는 페이징인풋
     @InputType()
     class OffsetPaginationInput {
-        @FieldDefault(() => OffsetPaginationOptionInput, {
+        @Field(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
-        })()
+        })
         @TransformType(() => OffsetPaginationOptionInput)
         @ValidateNested()
         offsetPaginationOption: OffsetPaginationOptionInput;

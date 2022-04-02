@@ -1,2 +1,2 @@
 export * from './offset-paginated.dto';
-export * from './offset-pagination.input';
+export * from './offset-paginated.input';

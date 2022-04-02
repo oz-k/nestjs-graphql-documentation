@@ -1,6 +1,6 @@
 import { GraphQLISODateTime } from "@nestjs/graphql";
 import { GraphQLObjectID } from 'graphql-scalars';
-import { FieldDefault } from "./field-default.decorator";
+import { FieldDefault } from "./field.decorator";
 
 export const ObjectIdField = FieldDefault(() => GraphQLObjectID, {
     name: '고유 아이디',

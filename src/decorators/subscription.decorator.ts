@@ -20,7 +20,7 @@ export function Subscription(
     }
     
     return GraphQLSubscription(typeFunc, {
-        ...options,
+        ...errorDocumentationOptionsArrayOrOptions as OmittedSubscriptionOptions,
         description: stringifyResolverDocumentationOption(documentationOptions),
     });
 }
