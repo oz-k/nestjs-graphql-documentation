@@ -15,12 +15,10 @@ export class DataLoaderInterceptor implements NestInterceptor {
     ) {}
 
     public intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        //현재 메소드가 실행중인 어플리케이션 타입이 graphql이 아닌경우 즉시 메소드 실행
         if(context.getType<GqlContextType>() !== 'graphql') {
             return next.handle();
         }
 
-        //graphql context로 스위칭
         const ctx = GqlExecutionContext.create(context).getContext();
 
         //dataloader가 설정되어있지 않을 경우
@@ -38,7 +36,7 @@ export class DataLoaderInterceptor implements NestInterceptor {
                             try {
                                 return this.moduleRef.get(type, {strict: false}).generateDataLoader(_ctx);
                             } catch (e) {
-                                throw new InternalServerErrorException(`The loader ${type.name} is not provided` + e,);
+                                throw new InternalServerErrorException(`The loader ${type.name} is not provided` + e);
                             }
                         })();
                     }
@@ -74,38 +72,46 @@ export const Loader = createParamDecorator(
     }
 );
 
-export const ensureOrder = (options) => {
-    const {
-        docs,
-        keys,
-        prop,
-    } = options;
-    
-    const docsMap = new Map();
-    docs.forEach((doc) => docsMap.set(String(doc[prop]), doc));
-    return keys.map((key) => docsMap.get(String(key)));
+export const ensureOrder = <ID, Type>({docs, keys, propertyKey: propertyKey = '_id', isManySameKey = false}: {docs: Type[], keys: readonly ID[], propertyKey?: string, isManySameKey?: boolean}) => {
+    const docsMap: Record<string, Type | Array<Type> | undefined> = {};
+
+    docs.forEach(doc => {
+        const currentKey = String(doc[propertyKey]);
+
+        if(isManySameKey) {
+            if(!docsMap[currentKey]) {
+                docsMap[currentKey] = [];
+            }
+
+            (docsMap[currentKey] as Array<Type>).push(doc);
+        } else {
+            (docsMap[currentKey] as Type) = doc;
+        }
+    });
+
+    return keys.map((key) => docsMap[String(key)]);
 };
 
-export interface INestDataLoaderFactoryOptions<ID, Type> {
+export interface NestDataLoaderFactoryOptions<ID, Type> {
     propertyKey?: string;
-    query: (ids: readonly ID[]) => Promise<Type>;
+    isManySameKey?: boolean;
+    query: (ids: readonly ID[]) => Promise<Type[]>;
     typeName?: string;
-    dataloaderConfig?: DataLoader.Options<ID, Type>;
+    dataloaderConfig?: DataLoader.Options<ID, Type[]>;
 }
 
 export abstract class NestDataLoaderFactory<ID, Type> {
-    protected abstract getOptions: (context: GraphQLRequestContext) => INestDataLoaderFactoryOptions<ID, Type>;
+    protected abstract getOptions: (context: GraphQLRequestContext) => NestDataLoaderFactoryOptions<ID, Type>;
 
     public generateDataLoader(context: GraphQLRequestContext) {
-        return this.createLoader(this.getOptions(context));
-    }
-
-    protected createLoader(options: INestDataLoaderFactoryOptions<ID, Type>): DataLoader<ID, Type> {
-        return new DataLoader<ID, Type>(async (keys) => {
+        const options = this.getOptions(context);
+        
+        return new DataLoader<ID, Type | Type[]>(async (keys) => {
             return ensureOrder({
                 docs: await options.query(keys),
                 keys,
-                prop: options.propertyKey || '_id',
+                propertyKey: options.propertyKey,
+                isManySameKey: options.isManySameKey,
             });
         }, {
             ...options.dataloaderConfig,

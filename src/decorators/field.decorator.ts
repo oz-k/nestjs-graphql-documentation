@@ -15,6 +15,7 @@ export function Field(
 
     const fieldOptions: FieldOptions = {
         ...options,
+        nullable: !documentationOptions.required,
         description: stringifyFieldDocumentationOptions(documentationOptions),
     };
     

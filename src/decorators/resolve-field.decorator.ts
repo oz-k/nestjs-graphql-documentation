@@ -18,7 +18,7 @@ export function ResolveField(
     documentationOptions: FieldDocumentationOptions,
     options?: OmittedFieldOptions,
 ) {
-    GraphQLResolveField(propertyName, returnTypeFunc, {
+    return GraphQLResolveField(propertyName, returnTypeFunc, {
         ...options,
         nullable: !documentationOptions.required,
         description: stringifyFieldDocumentationOptions(documentationOptions),

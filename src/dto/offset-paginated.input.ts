@@ -1,4 +1,4 @@
-import { IOffsetPaginationOption } from "@a-part/mongoose-pagination-plugin";
+import { OffsetPaginationOption } from "@a-part/mongoose-pagination-plugin";
 import { Field } from "../decorators";
 import { Type } from "@nestjs/common";
 import { InputType } from "@nestjs/graphql";
@@ -14,15 +14,19 @@ const LIMIT_SIZE = {
     MAX: 20
 }
 
+
 //페이징 요청 인터페이스
-export interface GetOffsetPaginatedInput<T> {
-    offsetPaginationOption: IOffsetPaginationOption;
-    filter?: T;
+export interface GetOffsetPaginatedInput {
+    offsetPaginationOption: OffsetPaginationOption;
+}
+
+export interface GetOffsetPaginatedInputWithFilter<T> extends GetOffsetPaginatedInput {
+    filter: T;
 }
 
 //페이징옵션 클래스
 @InputType()
-class OffsetPaginationOptionInput implements IOffsetPaginationOption {
+class OffsetPaginationOptionInput implements OffsetPaginationOption {
     @Field(() => GraphQLInt, {
         name: '현재 페이지',
         example: 1,
@@ -44,16 +48,18 @@ class OffsetPaginationOptionInput implements IOffsetPaginationOption {
     limit: number;
 }
 
+export function GetOffsetPaginatedInput(): Type<GetOffsetPaginatedInput>;
+export function GetOffsetPaginatedInput<T>(classRef: Type<T>): Type<GetOffsetPaginatedInputWithFilter<T>>;
 /**
  * 페이징 request를 제네릭으로 만드는 함수
  * @param classRef 페이징 filter 타입
  * @returns 페이징 request
  * @author oz-k
  */
-export function GetOffsetPaginatedInput<T>(classRef?: Type<T>): Type<GetOffsetPaginatedInput<T>> {
+export function GetOffsetPaginatedInput<T>(classRef?: Type<T>) {
     //필터가 있는 페이징인풋
     @InputType()
-    class OffsetPaginationFilterInput<T> implements GetOffsetPaginatedInput<T> {
+    class OffsetPaginationFilterInput implements GetOffsetPaginatedInputWithFilter<T> {
         @Field(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
@@ -73,7 +79,7 @@ export function GetOffsetPaginatedInput<T>(classRef?: Type<T>): Type<GetOffsetPa
 
     //필터가 없는 페이징인풋
     @InputType()
-    class OffsetPaginationInput {
+    class OffsetPaginationInput implements GetOffsetPaginatedInput {
         @Field(() => OffsetPaginationOptionInput, {
             name: '페이징 옵션',
             required: true
