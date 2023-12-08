@@ -150,7 +150,7 @@ export const stringifyFieldDocumentationOptions = (fieldDocumentationOptions: Fi
 
 /**
  * Resolver 명세를 graphql의 description으로 사용가능하게 문자열화하는 함수
- * @param options 스웨거를 기반으로 둔 유효성검사 명세 옵션
+ * @param options 스웨거를 기반으로 둔 명세 옵션
  * @returns 문자열화된 description
 */
 export function stringifyResolverDocumentationOption(
