@@ -1,43 +1,33 @@
 {
-    "name": "@a-part/nestjs-graphql-helper",
+    "name": "@a-part/nestjs-graphql-documentation",
     "version": "2.7.14",
-    "description": "nestjs graphql helper",
+    "description": "nestjs graphql documentation",
     "scripts": {
         "test": "jest",
         "build": "rm -rf dist && tsc"
     },
     "author": {
         "name": "oz-k",
-        "email": "cem0614@naver.com",
+        "email": "oz.k0614@gmail.com",
         "url": "https://github.com/oz-k"
     },
-    "homepage": "https://github.com/oz-k/nestjs-graphql-helper",
+    "homepage": "https://github.com/oz-k/nestjs-graphql-documentation",
     "repository": {
         "type": "git",
-        "url": "https://github.com/oz-k/nestjs-graphql-helper"
+        "url": "https://github.com/oz-k/nestjs-graphql-documentation"
     },
     "license": "MIT",
     "peerDependencies": {
         "@nestjs/common": "^8.2.6",
         "@nestjs/graphql": "^10.0.8",
-        "@nestjs/mongoose": "^9.0.2",
         "apollo-server-core": "^3.6.7",
-        "class-transformer": "^0.5.1",
-        "class-validator": "^0.13.2",
-        "graphql": "^16.3.0",
-        "graphql-scalars": "^1.17.0"
+        "class-validator": "^0.13.2"
     },
     "dependencies": {
-        "@a-part/mongoose-pagination-plugin": "^2.0.5",
         "@nestjs/common": "^8.2.6",
         "@nestjs/graphql": "^10.0.8",
-        "@nestjs/mongoose": "^9.0.2",
         "apollo-server-core": "^3.6.7",
-        "class-transformer": "^0.5.1",
-        "class-validator": "^0.13.2",
-        "dataloader": "^2.0.0",
-        "graphql": "^16.3.0",
-        "graphql-scalars": "^1.17.0"
+        "class-validator": "^0.13.2"
     },
     "devDependencies": {
         "@types/jest": "^27.4.1",

@@ -123,7 +123,6 @@ function generateErrorOptionsMarkDown(options: ErrorDocumentationOptions[]) {
  * 필드 명세를 graphql의 description으로 사용가능하게 문자열화하는 함수
  * @param fieldDocumentationOptions 스웨거를 기반으로 둔 명세 옵션
  * @returns 문자열화된 description
- * @author oz-k
 */
 export const stringifyFieldDocumentationOptions = (fieldDocumentationOptions: FieldDocumentationOptions) => {
     return generateDocumentationOptionsMarkDown(
@@ -153,7 +152,6 @@ export const stringifyFieldDocumentationOptions = (fieldDocumentationOptions: Fi
  * Resolver 명세를 graphql의 description으로 사용가능하게 문자열화하는 함수
  * @param options 스웨거를 기반으로 둔 유효성검사 명세 옵션
  * @returns 문자열화된 description
- * @author oz-k
 */
 export function stringifyResolverDocumentationOption(
     options: ResolverDocumentationOptions,

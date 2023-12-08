@@ -1,10 +1,25 @@
-import { Field as GraphQLField, FieldOptions, ReturnTypeFunc } from "@nestjs/graphql";
+import { Field, FieldOptions, ReturnTypeFunc } from "@nestjs/graphql";
 import { stringifyFieldDocumentationOptions } from "../utils";
-import { FieldDocumentationOptions, OmittedFieldOptions } from "../interfaces";
+import { FieldDocumentationOptions } from "../interfaces";
 
-export function Field(documentationOptions: FieldDocumentationOptions, options?: OmittedFieldOptions): PropertyDecorator;
-export function Field(returnTypeFunc: ReturnTypeFunc, documentationOptions: FieldDocumentationOptions, options?: OmittedFieldOptions): PropertyDecorator;
-export function Field(
+type OmittedFieldOptions = Omit<FieldOptions, 'description' | 'nullable'>;
+
+/**
+ * 기존 nestjs graphql Field 데코레이터에 명세옵션을 추가한 데코레이터
+ * @param documentationOptions 명세 옵션
+ * @param options field 옵션
+ */
+export function FieldDoc(documentationOptions: FieldDocumentationOptions, options?: OmittedFieldOptions): PropertyDecorator;
+
+/**
+ * 기존 nestjs graphql Field 데코레이터에 명세옵션을 추가한 데코레이터
+ * @param returnTypeFunc graphql의 리턴타입
+ * @param documentationOptions 명세 옵션
+ * @param options field 옵션
+ */
+export function FieldDoc(returnTypeFunc: ReturnTypeFunc, documentationOptions: FieldDocumentationOptions, options?: OmittedFieldOptions): PropertyDecorator;
+
+export function FieldDoc(
     returnTypeFuncOrDocumentationOptions: ReturnTypeFunc | FieldDocumentationOptions,
     documentationOptionsOrOptions: FieldDocumentationOptions | OmittedFieldOptions,
     options?: OmittedFieldOptions,
@@ -20,27 +35,26 @@ export function Field(
     };
     
     return isExistReturnTypeFunc
-        ? GraphQLField(returnTypeFunc, fieldOptions)
-        : GraphQLField(fieldOptions);
+        ? Field(returnTypeFunc, fieldOptions)
+        : Field(fieldOptions);
 }
 
 /**
- * 명세옵션이 추가된 Field 데코레이터에 기본값을 먹이는 함수
+ * 명세옵션이 추가된 FieldDoc 데코레이터의 고차 데코레이터
  * @param defaultReturnTypeFunction graphql의 리턴타입
  * @param defaultDocumentationOptions 명세 옵션
- * @param defaultOptions 필드 옵션
+ * @param defaultOptions field 옵션
  * @returns Field 데코레이터
- * @author oz-k
  */
-export function FieldDefault(
+export function FieldDocDefault(
     defaultReturnTypeFunction: ReturnTypeFunc | null, 
     defaultDocumentationOptions: FieldDocumentationOptions, 
     defaultOptions?: OmittedFieldOptions
 ) {
-    /** 기존 graphql의 Field 데코레이터에 명세옵션을 추가한 데코레이터 */
-    function Field(documentationOptions?: Partial<FieldDocumentationOptions>, options?: Partial<OmittedFieldOptions>): ReturnType<typeof GraphQLField>;
-    function Field(returnTypeFunction?: ReturnTypeFunc, documentationOptions?: Partial<FieldDocumentationOptions>, options?: Partial<OmittedFieldOptions>): ReturnType<typeof GraphQLField>;
-    function Field(
+    /** 기존 graphql의 FieldDoc 데코레이터에 명세옵션을 추가한 데코레이터 */
+    function FieldDoc(documentationOptions?: Partial<FieldDocumentationOptions>, options?: Partial<OmittedFieldOptions>): ReturnType<typeof Field>;
+    function FieldDoc(returnTypeFunction?: ReturnTypeFunc, documentationOptions?: Partial<FieldDocumentationOptions>, options?: Partial<OmittedFieldOptions>): ReturnType<typeof Field>;
+    function FieldDoc(
         returnTypeFunctionOrDocumentationOptions?: ReturnTypeFunc | Partial<FieldDocumentationOptions>,
         documentationOptionsOrOptions?: Partial<FieldDocumentationOptions> | Partial<OmittedFieldOptions>, 
         options?: Partial<OmittedFieldOptions>,
@@ -67,9 +81,9 @@ export function FieldDefault(
         };
 
         return returnTypeFunction
-            ? GraphQLField(returnTypeFunction, fieldOptions)
-            : GraphQLField(fieldOptions);
+            ? Field(returnTypeFunction, fieldOptions)
+            : Field(fieldOptions);
     }
 
-    return Field;
+    return FieldDoc;
 }

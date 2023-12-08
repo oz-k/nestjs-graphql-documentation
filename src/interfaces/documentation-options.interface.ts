@@ -1,6 +1,11 @@
 import { Type } from '@nestjs/common';
 import { ApolloError } from 'apollo-server-core';
 
+export interface ResolverDocumentationOptions {
+  name: string; // 리졸버 기능
+  description?: string; // 추가 설명
+}
+
 export interface FieldDocumentationOptions {
     name: string; //필드명
     example?: any; //데이터 예시
@@ -23,8 +28,3 @@ export interface ErrorDocumentationOptions {
     error: Type<ApolloError>;
     description: string;
 };
-
-export interface ResolverDocumentationOptions {
-    name: string; // 리졸버 기능
-    description?: string; // 추가 설명
-}
